@@ -1,44 +1,55 @@
-import React,{Fragment,useState} from 'react'
+import React, { Fragment, useState } from 'react'
 
 const MiComponente = () => {
-    const[nombre,setNombre] = useState("")
-    const[apellido,setApellido] = useState("")
+    const [nombre, setNombre] = useState("")
+    const [apellido, setApellido] = useState("")
+    const [personas, setPersonas] = useState([])
 
-    const handleInputChangeNombre = (event) => 
-    {
+    const handleInputChangeNombre = (event) => {
         //console.log(event.target.value)
-         setNombre(event.target.value)
+        setNombre(event.target.value)
     }
-    
-    const handleInputChangeApellido = (event) => 
-    {
+
+    const handleInputChangeApellido = (event) => {
         //console.log(event.target.value)
         setApellido(event.target.value)
 
     }
 
-    const enviarDatos = ()=>{
-       // alert("Entro aqui")
+    const enviarDatos = () => {
+        // alert("Entro aqui")
         // console.log("Enviando datos nombre:"+nombre+" y apellido:"+apellido)
         console.log(`Enviando datos nombre:${nombre} y apellido:${apellido}`)
+
+        let nuevo = {
+            name: nombre,
+            last: apellido
+        }
+        setPersonas(personas => [...personas, nuevo])
+        setNombre("")
+        setApellido("")
     }
 
-    return(
+    return (
         <Fragment>
             <h1>Formulario</h1>
             <div>
                 <div>
-                    <input type="text" placeholder="Nombre" name="nombre" onChange={handleInputChangeNombre} ></input>
+                    <input type="text" placeholder="Nombre" name="nombre" onChange={handleInputChangeNombre} value={nombre} ></input>
                 </div>
 
                 <div>
-                    <input type="text" placeholder="Apellido" name="apellido" onChange={handleInputChangeApellido}></input>
+                    <input type="text" placeholder="Apellido" name="apellido" onChange={handleInputChangeApellido} value={apellido}></input>
                 </div>
                 <button onClick={enviarDatos}>Enviar</button>
 
-                <label>Nombre:{nombre}</label>
-                <label>Apellido:{apellido}</label>
-                
+
+                <div className="users">
+                    {personas.map((persona) => (
+                 
+                          <li>{persona.name} {persona.last}</li>
+                    ))}
+                </div>
 
             </div>
 
