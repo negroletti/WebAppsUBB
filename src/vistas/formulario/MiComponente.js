@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import axios from 'axios'
+import MaterialDatatable from "material-datatable";
+
 
 const MiComponente = () => {
     const [nombre, setNombre] = useState("")
@@ -79,6 +81,54 @@ const MiComponente = () => {
           });
       }
 
+      const columns = [
+        {
+         name: "Name",
+         field: "name",
+         options: {
+          filter: true,
+          sort: true,
+         }
+        },
+        {
+         name: "Company",
+         field: "company",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "City",
+         field: "city",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "State",
+         field: "state",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       ];
+        
+       const data = [
+           {name: "Name 1", title: "Title 1", location: "Location 1", age: 30, salary: 10},
+           {name: "Name 2", title: "Title 2", location: "Location 2", age: 31, salary: 11},
+       ];
+        
+       const options = {
+        filterType: 'checkbox',
+        onlyOneRowCanBeSelected:true,
+        onRowClick: handleRowClick
+       };
+       const handleRowClick = (rowData, rowMeta) => {
+        console.log(rowData.name)
+    };
     return (
         <Fragment>
             <h1>Formulario</h1>
@@ -101,7 +151,12 @@ const MiComponente = () => {
                 </div>
 
             </div>
-
+            <MaterialDatatable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
+/>
 
         </Fragment>
 
