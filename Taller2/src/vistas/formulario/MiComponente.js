@@ -25,15 +25,6 @@ const MiComponente = () => {
         console.log(`Enviando datos nombre:${nombre} y apellido:${apellido}`)
 
         guardarPersona();
-     
-     
-        // let nuevo = {
-        //     name: nombre,
-        //     last: apellido
-        // }
-        // setPersonas(personas => [...personas, nuevo])
-        // setNombre("")
-        // setApellido("")
     }
 
     useEffect(()=>{
@@ -42,7 +33,7 @@ const MiComponente = () => {
     },[])
     async function getPersonas() {
         try {
-          const response = await axios.get('http://192.99.144.232:5000/api/personas?grupo=2');
+          const response = await axios.get('http://192.99.144.232:5000/api/personas?grupo=20');
           if(response.status == 200)
           {
             
@@ -62,7 +53,7 @@ const MiComponente = () => {
         axios.post('http://192.99.144.232:5000/api/personas', {
             nombre: nombre,
             apellido: apellido,
-            grupo:2
+            grupo:20
           })
           .then(function (response) {
 
@@ -83,32 +74,16 @@ const MiComponente = () => {
 
       const columns = [
         {
-         name: "Name",
-         field: "name",
+         name: "Nombre",
+         field: "nombre",
          options: {
           filter: true,
           sort: true,
          }
         },
         {
-         name: "Company",
-         field: "company",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "City",
-         field: "city",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "State",
-         field: "state",
+         name: "Apellido",
+         field: "apellido",
          options: {
           filter: true,
           sort: false,
@@ -116,21 +91,17 @@ const MiComponente = () => {
         },
        ];
         
-       const data = [
-           {name: "Name 1", title: "Title 1", location: "Location 1", age: 30, salary: 10},
-           {name: "Name 2", title: "Title 2", location: "Location 2", age: 31, salary: 11},
-       ];
-        
+       const handleRowClick = (rowData, rowMeta) => {
+        console.log(rowData.name)
+        };
        const options = {
         filterType: 'checkbox',
         onlyOneRowCanBeSelected:true,
         onRowClick: handleRowClick
        };
-       const handleRowClick = (rowData, rowMeta) => {
-        console.log(rowData.name)
-    };
+
     return (
-        <Fragment>
+        <>
             <h1>Formulario</h1>
             <div>
                 <div>
@@ -142,23 +113,15 @@ const MiComponente = () => {
                 </div>
                 <button onClick={enviarDatos}>Enviar</button>
 
-
-                <div className="users">
-                    {personas.map((persona) => (
-                 
-                          <li>{persona.nombre} {persona.apellido}</li>
-                    ))}
-                </div>
-
             </div>
             <MaterialDatatable
-  title={"Employee List"}
-  data={data}
+  title={"Lista de trabajadores"}
+  data={personas}
   columns={columns}
   options={options}
 />
 
-        </Fragment>
+        </>
 
     )
 }
