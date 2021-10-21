@@ -221,7 +221,7 @@ const MiComponente = () => {
                     </Button>
                 </Grid>
             </Grid>
-            <Grid item xs={12} md={12} className="tabla">
+            <Grid item xs={12} md={12} style={{ "margin-top": "30px" }}>
                 <MaterialDatatable
                     title={"Employee List"}
                     data={personas}
