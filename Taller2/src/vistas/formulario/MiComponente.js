@@ -7,16 +7,8 @@ import {
     Typography,
     TextField,
 } from "@material-ui/core";
-import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import MaterialDatatable from "material-datatable";
-import {
-    Container,
-    Grid,
-    Button,
-    Typography,
-    TextField,
-} from "@material-ui/core";
 import Swal from "sweetalert2";
 
 const MiComponente = () => {
@@ -28,7 +20,6 @@ const MiComponente = () => {
     const [selected, setSelected] = useState(false);
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     const [accion, SetAccion] = useState("Guardar");
-    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     const handleInputChangeNombre = (event) => {
         setNombre(event.target.value);
