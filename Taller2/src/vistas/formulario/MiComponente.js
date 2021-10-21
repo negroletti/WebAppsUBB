@@ -1,4 +1,12 @@
 import React, { useEffect, useState } from "react";
+import {
+    Container,
+    Grid,
+    Button,
+    Typography,
+    TextField,
+} from "@material-ui/core";
+import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import MaterialDatatable from "material-datatable";
 
@@ -7,6 +15,9 @@ const MiComponente = () => {
     const [apellido, setApellido] = useState("");
     const [personas, setPersonas] = useState([]);
     const [idModificar, setIdModificar] = useState("");
+    const [rowSel, setRowSel] = useState(-1);
+    const [selected, setSelected] = useState(false);
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     const handleInputChangeNombre = (event) => {
         setNombre(event.target.value);
@@ -97,51 +108,77 @@ const MiComponente = () => {
     ];
 
     const handleRowClick = (rowData, rowMeta) => {
-        console.log(rowData._id);
         setIdModificar(rowData._id);
         setNombre(rowData.nombre);
         setApellido(rowData.apellido);
+        setRowSel(rowMeta.rowIndex);
+        if (rowMeta.rowIndex !== rowSel) {
+            setSelected(true);
+        } else {
+            setRowSel(-1);
+            setSelected(false);
+        }
+        console.log(rowMeta, rowSel, selected);
     };
     const options = {
         filterType: "checkbox",
         onlyOneRowCanBeSelected: true,
+        selectableRows: true,
         onRowClick: handleRowClick,
+        rowsSelected: [rowSel],
     };
 
     return (
-        <>
-            <h1>Formulario</h1>
-            <div>
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Nombre"
-                        name="nombre"
+        <Container maxWidth="md">
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={12}>
+                    <Typography variant="h6">Personas</Typography>
+                </Grid>
+                <Grid item xs={12} md={6} fullWidth>
+                    <TextField
+                        id="nombre"
+                        label="Nombre"
+                        variant="outlined"
+                        fullWidth
                         onChange={handleInputChangeNombre}
                         value={nombre}
-                    ></input>
-                </div>
-
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Apellido"
-                        name="apellido"
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <TextField
+                        id="apellido"
+                        label="Apellido"
+                        variant="outlined"
+                        fullWidth
                         onChange={handleInputChangeApellido}
                         value={apellido}
-                    ></input>
-                </div>
-                <button onClick={idModificar ? editarPersona : enviarDatos}>
-                    Enviar
-                </button>
-            </div>
-            <MaterialDatatable
-                title={"Lista de trabajadores"}
-                data={personas}
-                columns={columns}
-                options={options}
-            />
-        </>
+                    />
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={selected ? editarPersona : enviarDatos}
+                    >
+                        {selected ? "Editar" : "Guardar"}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <Button variant="contained" color="secondary" fullWidth>
+                        Eliminar
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} md={12} className="tabla">
+                <MaterialDatatable
+                    title={"Lista de trabajadores"}
+                    data={personas}
+                    columns={columns}
+                    options={options}
+                />
+            </Grid>
+        </Container>
     );
 };
 export default MiComponente;
