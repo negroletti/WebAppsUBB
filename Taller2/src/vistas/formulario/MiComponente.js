@@ -16,10 +16,9 @@ const MiComponente = () => {
     const [apellido, setApellido] = useState("");
     const [personas, setPersonas] = useState([]);
     const [idModificar, setIdModificar] = useState("");
-    const [rowSel, setRowSel] = useState(-1);
+    const [rowSel, setRowSel] = useState([]);
     const [selected, setSelected] = useState(false);
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-    const [accion, SetAccion] = useState("Guardar");
 
     const handleInputChangeNombre = (event) => {
         setNombre(event.target.value);
@@ -62,6 +61,8 @@ const MiComponente = () => {
             .then(function (response) {
                 if (response.status === 200) {
                     alert("Registro correcto");
+                    setNombre("");
+                    setApellido("");
                     getPersonas();
                 } else {
                     alert("Error al guardar");
@@ -80,7 +81,7 @@ const MiComponente = () => {
             .then(function (response) {
                 if (response.status === 200) {
                     alert("Registro correcto");
-                    setIdModificar("");
+
                     getPersonas();
                 } else {
                     alert("Error al guardar");
@@ -111,6 +112,10 @@ const MiComponente = () => {
                         if (response.status === 200) {
                             Swal.fire("Usuario eliminado!", "", "success");
                             setIdModificar("");
+                            setNombre("");
+                            setApellido("");
+                            setSelected(false);
+                            setRowSel([]);
                             getPersonas();
                         } else {
                             Swal.fire("Error al borrar!", "", "info");
@@ -151,11 +156,15 @@ const MiComponente = () => {
         if (rowMeta.rowIndex !== rowSel) {
             setSelected(true);
         } else {
-            setRowSel(-1);
+            setNombre("");
+            setApellido("");
+            setIdModificar("");
+            setRowSel(null);
             setSelected(false);
         }
         console.log(rowMeta, rowSel, selected);
     };
+
     const options = {
         filterType: "checkbox",
         onlyOneRowCanBeSelected: true,
@@ -176,6 +185,8 @@ const MiComponente = () => {
                         label="Nombre"
                         variant="outlined"
                         fullWidth
+                        value={nombre}
+                        onChange={handleInputChangeNombre}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -184,31 +195,32 @@ const MiComponente = () => {
                         label="Apellido"
                         variant="outlined"
                         fullWidth
+                        value={apellido}
+                        onChange={handleInputChangeApellido}
                     />
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <Button
                         variant="contained"
-                        onclick={idModificar ? editarPersona : enviarDatos}
                         color="primary"
                         fullWidth
+                        onClick={selected ? editarPersona : enviarDatos}
                     >
-                        {accion}
+                        {selected ? "Editar" : "Guardar"}
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <Button
                         variant="contained"
-                        disabled={idModificar ? false : true}
-                        onClick={borrarPersona}
                         color="secondary"
                         fullWidth
+                        disabled={!selected}
+                        onClick={borrarPersona}
                     >
                         Eliminar
                     </Button>
                 </Grid>
             </Grid>
-
             <Grid item xs={12} md={12} className="tabla">
                 <MaterialDatatable
                     title={"Employee List"}
