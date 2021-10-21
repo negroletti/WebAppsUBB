@@ -1,3 +1,4 @@
+import { useMediaQuery } from "react-responsive";
 import React, { useEffect, useState } from "react";
 import {
     Container,
@@ -9,6 +10,14 @@ import {
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import MaterialDatatable from "material-datatable";
+import {
+    Container,
+    Grid,
+    Button,
+    Typography,
+    TextField,
+} from "@material-ui/core";
+import Swal from "sweetalert2";
 
 const MiComponente = () => {
     const [nombre, setNombre] = useState("");
@@ -17,6 +26,8 @@ const MiComponente = () => {
     const [idModificar, setIdModificar] = useState("");
     const [rowSel, setRowSel] = useState(-1);
     const [selected, setSelected] = useState(false);
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    const [accion, SetAccion] = useState("Guardar");
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     const handleInputChangeNombre = (event) => {
@@ -50,7 +61,7 @@ const MiComponente = () => {
         }
     }
 
-    function guardarPersona() {
+    const guardarPersona = () => {
         axios
             .post("http://192.99.144.232:5000/api/personas", {
                 nombre: nombre,
@@ -68,7 +79,7 @@ const MiComponente = () => {
             .catch(function (error) {
                 console.log(error);
             });
-    }
+    };
     const editarPersona = () => {
         axios
             .put(`http://192.99.144.232:5000/api/personas/${idModificar}`, {
@@ -87,6 +98,40 @@ const MiComponente = () => {
             .catch(function (error) {
                 console.log(error);
             });
+    };
+    const borrarPersona = () => {
+        Swal.fire({
+            title: "¿Quieres borrar a este usuario?",
+            showDenyButton: true,
+            confirmButtonText: "Borrar",
+            denyButtonText: `No Borrar`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios
+                    .delete(
+                        `http://192.99.144.232:5000/api/personas/${idModificar}`,
+                        {
+                            nombre: nombre,
+                            apellido: apellido,
+                        }
+                    )
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            Swal.fire("Usuario eliminado!", "", "success");
+                            setIdModificar("");
+                            getPersonas();
+                        } else {
+                            Swal.fire("Error al borrar!", "", "info");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else if (result.isDenied) {
+                Swal.fire("El usuario no fue borrado", "", "info");
+            }
+        });
     };
     const columns = [
         {
@@ -140,8 +185,6 @@ const MiComponente = () => {
                         label="Nombre"
                         variant="outlined"
                         fullWidth
-                        onChange={handleInputChangeNombre}
-                        value={nombre}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -150,29 +193,34 @@ const MiComponente = () => {
                         label="Apellido"
                         variant="outlined"
                         fullWidth
-                        onChange={handleInputChangeApellido}
-                        value={apellido}
                     />
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <Button
                         variant="contained"
+                        onclick={idModificar ? editarPersona : enviarDatos}
                         color="primary"
                         fullWidth
-                        onClick={selected ? editarPersona : enviarDatos}
                     >
-                        {selected ? "Editar" : "Guardar"}
+                        {accion}
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                    <Button variant="contained" color="secondary" fullWidth>
+                    <Button
+                        variant="contained"
+                        disabled={idModificar ? false : true}
+                        onClick={borrarPersona}
+                        color="secondary"
+                        fullWidth
+                    >
                         Eliminar
                     </Button>
                 </Grid>
             </Grid>
+
             <Grid item xs={12} md={12} className="tabla">
                 <MaterialDatatable
-                    title={"Lista de trabajadores"}
+                    title={"Employee List"}
                     data={personas}
                     columns={columns}
                     options={options}
