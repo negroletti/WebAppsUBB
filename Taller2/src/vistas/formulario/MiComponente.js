@@ -18,7 +18,6 @@ const MiComponente = () => {
     const [idModificar, setIdModificar] = useState("");
     const [rowSel, setRowSel] = useState([]);
     const [selected, setSelected] = useState(false);
-    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     const handleInputChangeNombre = (event) => {
         setNombre(event.target.value);
