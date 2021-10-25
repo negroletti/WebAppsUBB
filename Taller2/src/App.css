@@ -23,4 +23,9 @@
 .topnav a.active {
     background-color: #04aa6d;
     color: white;
+    outline: none;
+}
+
+.topnav a:focus {
+    outline: none;
 }
