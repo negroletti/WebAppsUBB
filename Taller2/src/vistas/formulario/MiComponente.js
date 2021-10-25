@@ -80,25 +80,27 @@ const MiComponente = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                .put(`http://192.99.144.232:5000/api/personas/${idModificar}`, {
-                nombre: nombre,
-                apellido: apellido,
-            })
-            .then(function (response) {
-                if (response.status === 200) {
-                    Swal.fire("¡Usuario modificado!","","success");
+                    .put(
+                        `http://192.99.144.232:5000/api/personas/${idModificar}`,
+                        {
+                            nombre: nombre,
+                            apellido: apellido,
+                        }
+                    )
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            Swal.fire("¡Usuario modificado!", "", "success");
 
-                    getPersonas();
-                } else {
-                    alert("Error al modificar");
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
+                            getPersonas();
+                        } else {
+                            alert("Error al modificar");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             } else if (result.isDenied) {
-                Swal.fire("No se modificó el usuario","","info");
+                Swal.fire("No se modificó el usuario", "", "info");
             }
         });
     };
@@ -183,6 +185,10 @@ const MiComponente = () => {
         onRowClick: handleRowClick,
         rowsSelected: [rowSel],
         showSelectedRowsToolbar: false,
+        print: false,
+        download: false,
+        viewColumns: false,
+        filter: false,
     };
 
     return (
@@ -235,7 +241,7 @@ const MiComponente = () => {
             </Grid>
             <Grid item xs={12} md={12} style={{ "margin-top": "30px" }}>
                 <MaterialDatatable
-                    title={"Employee List"}
+                    title={"Lista de empleados"}
                     data={personas}
                     columns={columns}
                     options={options}
