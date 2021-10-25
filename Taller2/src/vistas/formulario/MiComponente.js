@@ -159,7 +159,7 @@ const MiComponente = () => {
             setNombre("");
             setApellido("");
             setIdModificar("");
-            setRowSel(null);
+            setRowSel([]);
             setSelected(false);
         }
         console.log(rowMeta, rowSel, selected);
@@ -171,6 +171,7 @@ const MiComponente = () => {
         selectableRows: true,
         onRowClick: handleRowClick,
         rowsSelected: [rowSel],
+        showSelectedRowsToolbar: false,
     };
 
     return (
