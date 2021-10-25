@@ -60,7 +60,7 @@ const MiComponente = () => {
             })
             .then(function (response) {
                 if (response.status === 200) {
-                    alert("Registro correcto");
+                    Swal.fire("¡Usuario guardado!", "", "success");
                     setNombre("");
                     setApellido("");
                     getPersonas();
@@ -73,23 +73,35 @@ const MiComponente = () => {
             });
     };
     const editarPersona = () => {
-        axios
-            .put(`http://192.99.144.232:5000/api/personas/${idModificar}`, {
+        Swal.fire({
+            title: "¿Quieres modificar a este usuario?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                .put(`http://192.99.144.232:5000/api/personas/${idModificar}`, {
                 nombre: nombre,
                 apellido: apellido,
             })
             .then(function (response) {
                 if (response.status === 200) {
-                    alert("Registro correcto");
+                    Swal.fire("¡Usuario modificado!","","success");
 
                     getPersonas();
                 } else {
-                    alert("Error al guardar");
+                    alert("Error al modificar");
                 }
             })
             .catch(function (error) {
                 console.log(error);
             });
+
+            } else if (result.isDenied) {
+                Swal.fire("No se modificó el usuario","","info");
+            }
+        });
     };
     const borrarPersona = () => {
         Swal.fire({
@@ -110,7 +122,7 @@ const MiComponente = () => {
                     )
                     .then(function (response) {
                         if (response.status === 200) {
-                            Swal.fire("Usuario eliminado!", "", "success");
+                            Swal.fire("¡Usuario eliminado!", "", "success");
                             setIdModificar("");
                             setNombre("");
                             setApellido("");
