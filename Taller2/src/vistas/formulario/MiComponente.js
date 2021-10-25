@@ -174,7 +174,7 @@ const MiComponente = () => {
     };
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" style={{ "margin-top": "30px" }}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={12}>
                     <Typography variant="h6">Personas</Typography>
