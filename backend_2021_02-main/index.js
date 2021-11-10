@@ -41,7 +41,7 @@ const options = {
  
 
 
-  mongoose.connect(`mongodb://192.99.144.232:27017/grupo1?security=false`, options)
+  mongoose.connect(`mongodb://192.99.144.232:27017/grupo20?security=false`, options)
   .then(() => console.log('> Successfully connected to DB'))
   .catch(err => console.log(err))  
 
