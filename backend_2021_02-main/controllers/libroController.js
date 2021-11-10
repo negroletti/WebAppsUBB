@@ -47,7 +47,7 @@ const listarUno = (req, res) => {
 //modificar libro
 const modificar = (req, res) => {
     try {
-        Libro.findByIdAndUpdate(req.params.nombre, req.body, (err, libro) => {
+        Libro.findByIdAndUpdate(req.params.id, req.body, (err, libro) => {
             if (err) {
                 res.status(500).send({
                     message: "Error al modificar el libro",
