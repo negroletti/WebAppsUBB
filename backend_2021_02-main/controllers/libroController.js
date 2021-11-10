@@ -1,5 +1,5 @@
 //Controller de libro
-var Libro = require('../models/libro');
+var Libro = require('../modelos/libro');
 
 const guardar = (req,res) => {
     try{

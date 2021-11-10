@@ -1,7 +1,9 @@
 'use strict'
 
 var express = require('express');
-var libroController = ('../controllers/libroController');
+var libroController = require ('../controllers/libroController');
+
+
 
 var api = express.Router();
 

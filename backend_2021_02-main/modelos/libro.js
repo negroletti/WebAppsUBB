@@ -1,7 +1,7 @@
 'use strict'
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-libroSchema = new Schema({
+const libroSchema = new Schema({
     nombre: {
         type: String,
         required: [true, 'El titulo es necesario']
