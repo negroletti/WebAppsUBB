@@ -1,6 +1,4 @@
 var Auto = require('../modelos/auto.js');   
-
-
      
 function guardar(req,res){
 
@@ -30,7 +28,7 @@ function guardar(req,res){
             res.status(200).send({ autos })
         })
     }
-    function recupera(req,res)
+    /*function recupera(req,res)
     {
         let idauto = req.params.id
         Auto.findById(idauto, (err, auto) => {
@@ -39,10 +37,9 @@ function guardar(req,res){
     
             res.status(200).send({ auto })
         })
-    }
+    }*/
     
     module.exports = {
         guardar,
-        listar,
-        recupera
+        listar
     };
