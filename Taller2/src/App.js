@@ -1,30 +1,20 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./App.css";
-import MiComponente from "./vistas/formulario/MiComponente";
-import Componente2 from "./vistas/formulario/Componente2";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import ListaAutos from "./Components/ListaAutos";
+import EditarAutos from "./Components/EditarAutos";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "primereact/resources/primereact.css";
+import "primereact/resources/themes/lara-light-purple/theme.css";
+import "./Styles/estiloPrincipal.css";
+import "primeicons/primeicons.css";
 
 function App() {
-    function Navbar() {
-        return (
-            <nav className="topnav">
-                <NavLink to="/otro" activeClassName="active">
-                    Integrantes
-                </NavLink>
-                <NavLink to="/personas" activeClassName="active">
-                    Personas
-                </NavLink>
-            </nav>
-        );
-    }
-
     return (
         <Router>
-            <Navbar />
-            <Switch>
-                <Route path="/otro" component={Componente2} />
-                <Route path="/personas" component={MiComponente} />
-            </Switch>
+            <Routes>
+                <Route exact path="/" element={<ListaAutos />} />
+                <Route exact path="/editar/:id" element={<EditarAutos />} />
+                <Route exact path="/agregar" element={<EditarAutos />} />
+            </Routes>
         </Router>
     );
 }
